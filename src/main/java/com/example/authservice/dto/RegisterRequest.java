@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class RegisterRequest {
-    private String nombreUsuario;
+    private String username;
     private String dni;
     private String password;
     private Rol rol ;
