@@ -18,31 +18,31 @@ public class AuthService {
     private final JwtService jwtService;
 
     public JwtResponse login(LoginRequest request) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(request.getNombreUsuario())
+        Usuario usuario = usuarioRepository.findByNombreUsuario(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         if (!passwordEncoder.matches(request.getPassword(), usuario.getPassword())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        String token = jwtService.generateToken(usuario.getNombreUsuario(), usuario.getRol().name());
+        String token = jwtService.generateToken(usuario.getUsername(), usuario.getRol().name());
         return new JwtResponse(token);
     }
 
     public JwtResponse register(RegisterRequest request) {
-        if (usuarioRepository.findByNombreUsuario(request.getNombreUsuario()).isPresent()) {
+        if (usuarioRepository.findByNombreUsuario(request.getUsername()).isPresent()) {
             throw new RuntimeException("El usuario ya existe");
         }
 
         Usuario usuario = Usuario.builder()
-                .nombreUsuario(request.getNombreUsuario())
+                .username(request.getUsername())
                 .dni(request.getDni())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .rol(request.getRol())
                 .build();
 
         usuarioRepository.save(usuario);
-        String token = jwtService.generateToken(usuario.getNombreUsuario(), usuario.getRol().name());
+        String token = jwtService.generateToken(usuario.getUsername(), usuario.getRol().name());
         return new JwtResponse(token);
     }
 }
