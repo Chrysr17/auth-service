@@ -18,7 +18,7 @@ public class AuthService {
     private final JwtService jwtService;
 
     public JwtResponse login(LoginRequest request) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(request.getUsername())
+        Usuario usuario = usuarioRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         if (!passwordEncoder.matches(request.getPassword(), usuario.getPassword())) {
@@ -30,14 +30,14 @@ public class AuthService {
     }
 
     public JwtResponse register(RegisterRequest request) {
-        if (usuarioRepository.findByNombreUsuario(request.getUsername()).isPresent()) {
+        if (usuarioRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new RuntimeException("El usuario ya existe");
         }
 
         Usuario usuario = Usuario.builder()
                 .username(request.getUsername())
-                .dni(request.getDni())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
                 .rol(request.getRol())
                 .build();
 
