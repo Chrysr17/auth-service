@@ -4,6 +4,7 @@ import com.example.authservice.dto.JwtResponse;
 import com.example.authservice.dto.LoginRequest;
 import com.example.authservice.dto.RegisterRequest;
 import com.example.authservice.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +21,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request){
-        try {
+    public ResponseEntity<JwtResponse> login(@RequestBody @Valid LoginRequest request){
             JwtResponse jwtResponse = authService.login(request);
             return ResponseEntity.ok(jwtResponse);
-        } catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        try {
+    public ResponseEntity<JwtResponse> register(@RequestBody @Valid RegisterRequest request) {
             JwtResponse jwtResponse = authService.register(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(jwtResponse);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
     }
 
 }
