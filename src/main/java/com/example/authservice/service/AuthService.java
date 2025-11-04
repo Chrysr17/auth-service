@@ -37,10 +37,10 @@ public class AuthService {
     }
 
     public JwtResponse register(RegisterRequest request) {
-        if (usuarioRepository.existByUsername(request.getUsername())) {
+        if (usuarioRepository.existsByUsername(request.getUsername())) {
             throw new AuthException("El nombre de usuario ya está en uso");
         }
-        if (usuarioRepository.existByEmail(request.getEmail())){
+        if (usuarioRepository.existsByEmail(request.getEmail())){
             throw new AuthException("El correo ya está registrado");
         }
 
