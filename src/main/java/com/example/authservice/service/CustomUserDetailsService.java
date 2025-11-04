@@ -1,6 +1,6 @@
 package com.example.authservice.service;
 
-import com.example.authservice.config.CustomUserDetails;
+import com.example.authservice.security.CustomUserDetails;
 import com.example.authservice.entity.Usuario;
 import com.example.authservice.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;

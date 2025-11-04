@@ -1,4 +1,4 @@
-package com.example.authservice.config;
+package com.example.authservice.security;
 
 import com.example.authservice.entity.Rol;
 import com.example.authservice.entity.Usuario;
