@@ -1,6 +1,7 @@
 package com.example.authservice.security;
 
 import com.example.authservice.repository.UsuarioRepository;
+import com.example.authservice.service.CustomUserDetailsService;
 import com.example.authservice.service.JwtService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -24,7 +25,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UsuarioRepository usuarioRepository;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -48,15 +49,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = usuarioRepository.findByUsername(username)
-                    .map(u -> User
-                            .withUsername(u.getUsername())
-                            .password(u.getPassword())
-                            .roles(u.getRol().name())
-                            .build())
-                    .orElse(null);
-
-            if (userDetails != null && jwtService.isTokenValid(jwt, username)){
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (jwtService.isTokenValid(jwt, userDetails.getUsername())){
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
