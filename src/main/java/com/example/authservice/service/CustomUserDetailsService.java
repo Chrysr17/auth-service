@@ -1,7 +1,7 @@
 package com.example.authservice.service;
 
 import com.example.authservice.security.CustomUserDetails;
-import com.example.authservice.entity.Usuario;
+import com.example.authservice.model.Usuario;
 import com.example.authservice.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

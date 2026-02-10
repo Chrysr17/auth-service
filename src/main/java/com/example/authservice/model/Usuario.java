@@ -1,4 +1,4 @@
-package com.example.authservice.entity;
+package com.example.authservice.model;
 
 import jakarta.persistence.*;
 import lombok.*;

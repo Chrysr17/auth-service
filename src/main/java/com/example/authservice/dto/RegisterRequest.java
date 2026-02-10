@@ -1,6 +1,6 @@
 package com.example.authservice.dto;
 
-import com.example.authservice.entity.Rol;
+import com.example.authservice.model.Rol;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
